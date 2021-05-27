@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Karyawans;
 use App\Models\Absens;
 use Auth;
+use Carbon\Carbon;
+use PDF;
 
 class KaryawanController extends Controller
 {
@@ -57,14 +59,53 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        $save = new Absens;
-        $save->user_id = strip_tags($request->user_id);
-        $save->type = strip_tags($request->type);
-        $save->explanation = strip_tags($request->explanation);
-        $save->level = strip_tags($request->level);
-        $save->save();
+        $time = Absens::where('created_at', 'LIKE', '%'.Carbon::now()->format('Y-m-d').'%')->first();
+        $masuk = Absens::where('user_id', $request->user_id)->where('type', 'masuk')->first();
+        $keluar = Absens::where('user_id', $request->user_id)->where('type', 'keluar')->first();
+        $izin = Absens::where('user_id', $request->user_id)->where('type', 'izin')->first();
 
-        return redirect()->back()->with('berhasil','Anda sudah absen, terima kasih!'); 
+        if ($time && $izin['type'] == 'izin') {
+            return redirect()->back()->with('izin','Anda sudah melakukan absen izin!');
+        }
+        else{
+            if ($time && $masuk['type'] == $request->type) {
+            return redirect()->back()->with('gagal_masuk','Anda sudah melakukan absen masuk!');
+            }
+            elseif ($time && $keluar['type'] == $request->type) {
+                return redirect()->back()->with('gagal_keluar','Anda sudah melakukan absen keluar!');
+            }
+            else{
+
+                $save = new Absens;
+                $save->user_id = strip_tags($request->user_id);
+                $save->type = strip_tags($request->type);
+                $save->explanation = strip_tags($request->explanation);
+                $save->level = strip_tags($request->level);
+                $save->save();
+
+                return redirect()->back()->with('berhasil','Anda sudah absen, terima kasih!');      
+            }    
+        }
+    }
+
+    public function cetak_pdf()
+    {
+        // Dashboard 
+        $karyawan = Karyawans::all();
+        $absen = Absens::all();
+        $tanggal = Carbon::now();
+
+        $pdf = PDF::loadview('admin.cetak_pdf',compact('karyawan','absen','tanggal'));
+        return $pdf->stream(Carbon::now()->format('Y-m-d').' laporan-pegawai-pdf');
+    }
+    public function pdf_detail($id)
+    {
+        $karyawan = Karyawans::where('id',$id)->first();
+        $absen = Absens::all();
+        $tanggal = Carbon::now();
+
+        $pdf = PDF::loadview('admin.cetak_detail_pdf',compact('karyawan','absen','tanggal'));
+        return $pdf->stream(Carbon::now()->format('Y-m-d').' laporan-pegawai-pdf');
     }
 
     /**

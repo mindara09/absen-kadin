@@ -36,14 +36,11 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/dashboard')}}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">KADIN JABAR</div>
+                <img src="{{ asset('/img/logo_kadin2.jpeg')}}" class="img-responsive rounded-circle mt-5" width="50%">
             </a>
 
             <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+            <hr class="sidebar-divider my-0 mt-5">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item {{ (request()->is('dashboard')) ? 'active' : '' }}">
@@ -66,6 +63,11 @@
                 <a class="nav-link" href="{{ url('/users')}}">
                     <i class="fas fa-fw fa-user-circle"></i>
                     <span>Users</span></a>
+            </li>
+            <li class="nav-item {{ (request()->is('logout')) ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('/dashboard/logout')}}">
+                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                    <span>Logout</span></a>
             </li>
             
         </ul>
@@ -94,7 +96,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->name}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{ asset('img/undraw_profile.svg')}}">
                             </a>
@@ -164,7 +166,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="{{ url('/dashboard/logout')}}">Logout</a>
                 </div>
             </div>
         </div>

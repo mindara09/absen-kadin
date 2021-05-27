@@ -8,7 +8,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Data Absen Karyawan</h1>
     <div class="ml-auto">
-    	<a href="" class="btn btn-primary btn-md">Export PDF</a>
+    	<a href="{{ url('/dashboard/cetak_pdf')}}" class="btn btn-primary btn-md">Export PDF</a>
     </div>
 </div>
 
@@ -160,6 +160,9 @@
                 			<a href="{{ url('/absen')}}/{{ $k->id}}" class="btn btn-primary btn-sm">
                 				<i class="fas fa-eye fa-sm text-white"></i>&nbsp; Lihat
                 			</a>
+                            <a href="{{ url('/dashboard/cetak_pdf')}}/{{ $k->id}}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-eye fa-sm text-white"></i>&nbsp; Export PDF
+                            </a>
                 		</td>
                 	</tr>
                 	@endforeach

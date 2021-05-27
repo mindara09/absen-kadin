@@ -28,17 +28,21 @@
                 <div class="alert alert-success">
                   {{ session('berhasil')}}
                 </div>
-              @elseif (session('hapus'))
-                <div class="alert alert-success">
-                  {{ session('hapus')}}
-                </div>
-              @elseif (session('gagal_hapus'))
+              @elseif (session('gagal_keluar'))
                 <div class="alert alert-danger">
-                  {{ session('gagal_hapus')}}
+                  {{ session('gagal_keluar')}}
                 </div>
-              @elseif(session('ubah'))
-                <div class="alert alert-success">
-                  {{ session('ubah')}}
+              @elseif (session('gagal_masuk'))
+                <div class="alert alert-danger">
+                  {{ session('gagal_masuk')}}
+                </div>
+              @elseif (session('gagal'))
+                <div class="alert alert-danger">
+                  {{ session('gagal')}}
+                </div>
+              @elseif(session('izin'))
+                <div class="alert alert-danger">
+                  {{ session('izin')}}
                 </div>
               @endif
             <form class="form-signin" method="post" action="{{ url('/')}}">

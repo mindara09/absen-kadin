@@ -12,10 +12,17 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => 'auth'], function(){
+	Route::get('/dashboard', 'KaryawanController@index')->name('dashboard');
+	Route::get('/karyawan', 'KaryawanController@karyawan')->name('karyawan');
+	Route::get('/users', 'UsersController@index')->name('users');
+	Route::get('/absen/{id}', 'KaryawanController@detail_absen')->name('absen_detail');
+	Route::get('/{id}', 'KaryawanController@absen')->name('absen');
+	Route::post('/', 'KaryawanController@store')->name('proses_absen');
+	Route::get('/dashboard/cetak_pdf','KaryawanController@cetak_pdf');
+	Route::get('/dashboard/cetak_pdf/{id}','KaryawanController@pdf_detail');
+	Route::get('/dashboard/logout','LoginController@logout')->name('logout');
+});
 
-Route::get('/dashboard', 'KaryawanController@index')->name('dashboard');
-Route::get('/karyawan', 'KaryawanController@karyawan')->name('karyawan');
-Route::get('/users', 'UsersController@index')->name('users');
-Route::get('/absen/{id}', 'KaryawanController@detail_absen')->name('absen_detail');
-Route::get('/{id}', 'KaryawanController@absen')->name('absen');
-Route::post('/', 'KaryawanController@store')->name('proses_absen');
+Route::get('/','LoginController@login')->name('login');
+Route::post('/login','LoginController@login_proses')->name('login_proses');
